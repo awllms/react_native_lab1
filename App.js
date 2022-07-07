@@ -1,18 +1,35 @@
-import * as React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import React, { useState} from "react";
+import reactDom from "react-dom";
+import { Text, View, StyleSheet, Image, Switch } from "react-native";
+import thumbnail from './assets/thumbnail.jpg';
 
 export default function App() {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   return (
-    <View style={styles.container}>
+    <View style={isEnabled ? styles.container : styles.containerDark}>
+      <View style={styles.navbar}>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+          style={isEnabled ? styles.toggleSwitch : styles.toggleSwitchDark}
+        />
+      </View>
       <View style={styles.photoContainer}>
-        <Image source={require("./assets/perry.png")} style={styles.photo} />
+        <Image source={thumbnail} style={styles.photo} />
+        <Text style={isEnabled ? styles.nameAndPronouns : styles.nameAndPronounsDark}>Anthony (he/him)</Text>
+        <Text style={isEnabled ? styles.blurb : styles.blurbDark}>I make stuff</Text>
       </View>
-      <View style={styles.nameContainer}>
-        <Text style={styles.nameAndPronouns}>Perry (she/her)</Text>
-      </View>
-      <View style={styles.blurbContainer}>
-        <Text style={styles.blurb}>chirp chirp i'm a parakeet</Text>
-      </View>
+      {/* <View style={styles.nameContainer}>
+        <Text style={styles.nameAndPronouns}>Anthony (he/him)</Text>
+      </View> */}
+      {/* <View style={styles.blurbContainer}>
+        <Text style={styles.blurb}>I make stuff.</Text>
+      </View> */}
     </View>
   );
 }
@@ -20,13 +37,28 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
+    color: "#fff"
+  },
+  containerDark: {
+    flex: 1,
+    backgroundColor: "black",
+    color: "#fff"
+  },
+  navbar: {
+    marginTop: 60,
+    alignItems: "flex-end"
+  },
+  toggleSwitch: {
+    marginRight: 20
+  },
+  toggleSwitchDark: {
+    marginRight: 20
   },
   photoContainer: {
-    flex: 3,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "yellow",
-    padding: 30,
+    marginTop: 100,
   },
   nameContainer: {
     flex: 1,
@@ -40,13 +72,29 @@ const styles = StyleSheet.create({
   },
   photo: {
     resizeMode: "contain",
-    width: "90%",
-    padding: 50,
+    borderRadius: 150,
+    width: 300,
+    height: 300,
+    resizeMode: "contain",
   },
   nameAndPronouns: {
-    fontSize: 50,
+    fontSize: 20,
+    marginTop: 30,
+    color: "#000"
+  },
+  nameAndPronounsDark: {
+    fontSize: 20,
+    marginTop: 30,
+    color: "#fff"
   },
   blurb: {
-    fontSize: 20,
+    fontSize: 18,
+    marginTop: 50,
+    color: "#000"
+  },
+  blurbDark: {
+    fontSize: 18,
+    marginTop: 50,
+    color: "#fff"
   },
 });
